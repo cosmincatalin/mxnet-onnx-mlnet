@@ -19,11 +19,11 @@ namespace inference
                     Target: ctx.LoadFloat(6)),
                 separator: ',',
                 hasHeader: true);
-            var data = reader.Read(new MultiFileSource("../data/test.csv"));
-            
+            var data = reader.Read(new MultiFileSource(args[1]));
+
             var learningPipeline = reader.MakeNewEstimator()
                 .Append(row => (Target: row.Target, Features: row.RateCode.ConcatWith(row.PassengerCount, row.TripTime, row.TripDistance)))
-                .Append(row => (Truth: row.Target, Estimate: row.Features.ApplyOnnxModel("../models/model.onnx")));
+                .Append(row => (Truth: row.Target, Estimate: row.Features.ApplyOnnxModel(args[0])));
 
             var model = learningPipeline.Fit(data);
             
@@ -36,7 +36,7 @@ namespace inference
                 TripTime = 1.0f,
                 TripDistance = 1.0f
             });            
-            Console.WriteLine(prediction.Estimate);
+            Console.WriteLine($"Prediction output is {prediction.Estimate}");
         }
     }
 }
