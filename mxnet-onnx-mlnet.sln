@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inference", "inference\inference.csproj", "{40C687B2-2844-4C1C-9EAC-675E5C9BABED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40C687B2-2844-4C1C-9EAC-675E5C9BABED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C687B2-2844-4C1C-9EAC-675E5C9BABED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C687B2-2844-4C1C-9EAC-675E5C9BABED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C687B2-2844-4C1C-9EAC-675E5C9BABED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3219E490-8B12-45E7-8396-913052D48E92}
+	EndGlobalSection
+EndGlobal
