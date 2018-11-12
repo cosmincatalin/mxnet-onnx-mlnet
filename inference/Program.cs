@@ -21,6 +21,9 @@ namespace inference
                 hasHeader: true);
             var data = reader.Read(new MultiFileSource(args[1]));
 
+            Console.WriteLine($"Reading test data from {args[1]} for no apparent reason.");
+            Console.WriteLine($"Reading ONNX model from {args[0]}.");
+
             var learningPipeline = reader.MakeNewEstimator()
                 .Append(row => (Target: row.Target, Features: row.RateCode.ConcatWith(row.PassengerCount, row.TripTime, row.TripDistance)))
                 .Append(row => (Truth: row.Target, Estimate: row.Features.ApplyOnnxModel(args[0])));
