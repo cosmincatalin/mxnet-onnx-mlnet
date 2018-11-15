@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.ML;
-using Microsoft.ML.Runtime;
 using Microsoft.ML.Runtime.Api;
 using Microsoft.ML.Runtime.Data;
 using Microsoft.ML.Transforms;
