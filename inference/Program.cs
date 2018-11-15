@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.ML;
+using Microsoft.ML.Runtime;
+using Microsoft.ML.Runtime.Api;
 using Microsoft.ML.Runtime.Data;
 using Microsoft.ML.Transforms;
 
@@ -24,15 +27,22 @@ namespace inference
             Console.WriteLine($"Reading test data from {args[1]} for no apparent reason.");
             Console.WriteLine($"Reading ONNX model from {args[0]}.");
 
-            var learningPipeline = reader.MakeNewEstimator()
-                .Append(row => (Target: row.Target, Features: row.RateCode.ConcatWith(row.PassengerCount, row.TripTime, row.TripDistance)))
-                .Append(row => (Truth: row.Target, Estimate: row.Features.ApplyOnnxModel(args[0])));
+            var pipeline = new ColumnConcatenatingEstimator(env, "Features", "RateCode", "PassengerCount", "TripTime", "TripDistance")
+                .Append(new ColumnSelectingEstimator(env, keepColumns: new string[] { "Features", "Target" }))
+                .Append(new OnnxScoringEstimator(env, args[0], "Features", "Estimate"))
+                .Append(new ColumnSelectingEstimator(env, keepColumns: new string[] { "Target", "Estimate" }))
+                .Append(new CustomMappingEstimator<RawPrediction, FlatPrediction>(env, contractName: "OnnxPredictionExtractor",
+                    mapAction: (input, output) =>
+                    {
+                        output.Target = input.Target;
+                        output.Estimate = input.Estimate[0];
+                    }));
 
-            var model = learningPipeline.Fit(data);
-            
-            var predictionFunction = model.AsDynamic.MakePredictionFunction<SearchData, SearchPrediction>(env);
 
-            var prediction = predictionFunction.Predict(new SearchData()
+            var transformer = pipeline.Fit(data.AsDynamic);
+            var predictionFn = transformer.MakePredictionFunction<SearchData, FlatPrediction>(env);
+
+            var prediction = predictionFn.Predict(new SearchData()
             {
                 RateCode = 1.0f,
                 PassengerCount = 1.0f,
@@ -40,6 +50,36 @@ namespace inference
                 TripDistance = 1.0f
             });            
             Console.WriteLine($"Prediction output is {prediction.Estimate}");
+
+            var testPredictions = transformer.Transform(data.AsDynamic); 
+
+            Console.WriteLine($"RMSE : {env.Regression.Evaluate(testPredictions, "Target", "Estimate").Rms}");
+        }
+
+        private class SearchData
+        {
+            [ColumnName("Target")]
+            public float DummyUnused{ get; set; }
+        
+            public float RateCode{ get; set; }
+
+            public float PassengerCount{ get; set; }
+
+            public float TripTime{ get; set; }
+
+            public float TripDistance{ get; set; }
+        }
+        
+        private  class RawPrediction
+        {
+            public float Target;
+            public float[] Estimate;
+        }
+
+        private class FlatPrediction
+        {
+            public float Target;
+            public float Estimate;
         }
     }
 }
