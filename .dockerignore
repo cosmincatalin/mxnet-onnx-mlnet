@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+inference/bin
+inference/obj
+inference/inference.csproj.user
+inference/out
+inference/Properties
+modeling
+data/train.csv

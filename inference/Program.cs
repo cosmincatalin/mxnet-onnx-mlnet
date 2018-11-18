@@ -26,9 +26,9 @@ namespace inference
             Console.WriteLine($"Reading ONNX model from {args[0]}.");
 
             var pipeline = new ColumnConcatenatingEstimator(env, "Features", "RateCode", "PassengerCount", "TripTime", "TripDistance")
-                .Append(new ColumnSelectingEstimator(env, keepColumns: new string[] { "Features", "Target" }))
+                .Append(new ColumnSelectingEstimator(env, "Features", "Target"))
                 .Append(new OnnxScoringEstimator(env, args[0], "Features", "Estimate"))
-                .Append(new ColumnSelectingEstimator(env, keepColumns: new string[] { "Target", "Estimate" }))
+                .Append(new ColumnSelectingEstimator(env, "Target", "Estimate"))
                 .Append(new CustomMappingEstimator<RawPrediction, FlatPrediction>(env, contractName: "OnnxPredictionExtractor",
                     mapAction: (input, output) =>
                     {
@@ -67,12 +67,14 @@ namespace inference
 
             public float TripDistance{ get; set; }
         }
-        
+
+        #pragma warning disable 649
         private  class RawPrediction
         {
             public float Target;
             public float[] Estimate;
         }
+        #pragma warning restore 649
 
         private class FlatPrediction
         {
