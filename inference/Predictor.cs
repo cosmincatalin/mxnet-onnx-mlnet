@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.ML;
 using Microsoft.ML.Runtime.Data;
 using Microsoft.ML.Transforms;
@@ -8,13 +9,11 @@ namespace inference
     {
         private readonly MLContext _env;
         private readonly string _onnxFilePath;
-        private readonly string _sampleDataPath;
 
-        public Predictor(MLContext env, string onnxFilePath, string sampleDataPath)
+        public Predictor(MLContext env, string onnxFilePath)
         {
             _env = env;
             _onnxFilePath = onnxFilePath;
-            _sampleDataPath = sampleDataPath;
         }
         
         public PredictionFunction<SearchData, FlatPrediction> GetPredictor()
@@ -28,7 +27,8 @@ namespace inference
                     Target: ctx.LoadFloat(6)),
                 separator: ',',
                 hasHeader: true);
-            var data = reader.Read(new MultiFileSource(_sampleDataPath));
+            var dummyTempFile = Path.GetTempFileName();
+            var data = reader.Read(new MultiFileSource(dummyTempFile));
             
             var pipeline = new ColumnConcatenatingEstimator(_env, "Features", "RateCode", "PassengerCount", "TripTime", "TripDistance")
                 .Append(new ColumnSelectingEstimator(_env, "Features", "Target"))
@@ -42,6 +42,7 @@ namespace inference
                     }));
 
             var transformer = pipeline.Fit(data.AsDynamic);
+            File.Delete(dummyTempFile);
             return transformer.MakePredictionFunction<SearchData, FlatPrediction>(_env);
         }
     }
