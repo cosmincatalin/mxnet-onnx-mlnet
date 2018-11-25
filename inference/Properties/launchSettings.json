@@ -2,7 +2,7 @@
   "profiles": {
     "inference": {
       "commandName": "Project",
-      "commandLineArgs": "$(ProjectDir)..\\models\\model.onnx $(ProjectDir)..\\data\\test.csv"
+      "commandLineArgs": "--onnx $(ProjectDir)..\\models\\model.onnx"
     }
   }
 }

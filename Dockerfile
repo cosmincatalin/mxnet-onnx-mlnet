@@ -1,16 +1,13 @@
 FROM microsoft/dotnet:sdk AS build-env
-WORKDIR /app
-
-COPY inference/*.csproj ./
+COPY inference/*.csproj /src
+COPY inference/*.cs src/
+WORKDIR /src
 RUN dotnet restore --verbosity normal
-
-COPY inference/*.cs ./
-RUN dotnet publish -c Release -o out -r win10-x64
+RUN dotnet publish -c Release -o /app -r win10-x64
 
 FROM microsoft/dotnet:aspnetcore-runtime
+COPY --from=build-env /app /app
+COPY models/model.onnx /models
+COPY lib/* /app
 WORKDIR /app
-COPY --from=build-env /app/out .
-COPY data/test.csv ./
-COPY models/model.onnx ./
-COPY lib/* ./
-CMD ["dotnet", "inference.dll", "model.onnx", "test.csv"]
+CMD ["dotnet", "inference.dll", "--onnx", "/models/model.onnx"]
