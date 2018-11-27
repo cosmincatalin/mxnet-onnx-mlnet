@@ -6,7 +6,7 @@ This is an example project to show how an Apache MXNet MLP model can be exported
 
 For the _Modeling_ part you need Docker to use Linux containers.
 
-For the _Inference_ part you need Docker to use Windows containers. You need to be on Windows to e able to do this.
+For the _Inference_ part you need Docker to use Windows containers. You need to be on Windows to be able to do this.
 
 If you do not have a Windows box, you can just run the modeling part.
 
@@ -40,4 +40,4 @@ Use the generated _ONNX_ model for running an inference web service.
  * Make sure Docker uses Windows containers [How to guide](https://docs.docker.com/docker-for-windows/#switch-between-windows-and-linux-containers)
  * Build image `docker build -t mxnet-onnx-mlnet-inference -f Dockerfile.inference .`
  * Run container based on the built image `docker run -p 5000:80 mxnet-onnx-mlnet-inference`
- * Test with a cURL call `curl -H "Content-Type: application/json" -d "{'RateCode':1.0,"PassengerCount":1.0,"TripTime":1.0,"TripDistance":1.0}" http://localhost:5000`
+ * Test with a cURL call or similar. Eg: `curl -H "Content-Type: application/json" -d "{'RateCode':1.0,"PassengerCount":1.0,"TripTime":1.0,"TripDistance":1.0}" http://localhost:5000`
