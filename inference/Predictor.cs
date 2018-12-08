@@ -23,21 +23,19 @@ namespace inference
                     RateCode: ctx.LoadFloat(1),
                     PassengerCount: ctx.LoadFloat(2),
                     TripTime: ctx.LoadFloat(3),
-                    TripDistance: ctx.LoadFloat(4),
-                    Target: ctx.LoadFloat(6)),
+                    TripDistance: ctx.LoadFloat(4)),
                 separator: ',',
                 hasHeader: true);
             var dummyTempFile = Path.GetTempFileName();
             var data = reader.Read(new MultiFileSource(dummyTempFile));
             
             var pipeline = new ColumnConcatenatingEstimator(_env, "Features", "RateCode", "PassengerCount", "TripTime", "TripDistance")
-                .Append(new ColumnSelectingEstimator(_env, "Features", "Target"))
+                .Append(new ColumnSelectingEstimator(_env, "Features"))
                 .Append(new OnnxScoringEstimator(_env, _onnxFilePath, "Features", "Estimate"))
-                .Append(new ColumnSelectingEstimator(_env, "Target", "Estimate"))
+                .Append(new ColumnSelectingEstimator(_env, "Estimate"))
                 .Append(new CustomMappingEstimator<RawPrediction, FlatPrediction>(_env, contractName: "OnnxPredictionExtractor",
                     mapAction: (input, output) =>
                     {
-                        output.Target = input.Target;
                         output.Estimate = input.Estimate[0];
                     }));
 
