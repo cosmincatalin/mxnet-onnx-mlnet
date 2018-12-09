@@ -1,8 +1,8 @@
-# MXNet to ONNX to ML.NET
+### MXNet to ONNX to ML.NET
 
 This is an example project to show how an Apache MXNet MLP model can be exported to the ONNX format and subsequently be used in ML.NET. The challenge was running inference in ML.NET because at the time of writing, the ONNX Transformer was only supported on Windows [ref](https://blogs.msdn.microsoft.com/dotnet/2018/10/08/announcing-ml-net-0-6-machine-learning-net/).
 
-# *Tutorial*
+# **Tutorial**
 
 **An in-depth tutorial describing the process and how to productionize the whole ML pipeline in AWS is described on my blog:**
 
@@ -10,7 +10,7 @@ This is an example project to show how an Apache MXNet MLP model can be exported
 
 **To follow the tutorial all you need in terms of software requirements are a browser and an RDP client.**
 
-# Requirements
+### Requirements
 
 For the _Modeling_ part you need Docker to use Linux containers.
 
@@ -18,7 +18,7 @@ For the _Inference_ part you need Docker to use Windows containers. You need to 
 
 If you do not have a Windows box, you can just run the modeling part.
 
-## Modeling
+#### Modeling
 
 The data for this example comes from the [New York taxi fare dataset](https://www.kaggle.com/c/new-york-city-taxi-fare-prediction/data).
 
@@ -39,7 +39,7 @@ The model artefacts are already in the repository and running the modelling step
     * Build image `docker build -t mxnet-onnx-mlnet-modeling -f Dockerfile.modeling .`
     * Run container: `docker run -p 8888:8888 -v $(pwd)/data:/notebook/data/:ro -v $(pwd)/models:/notebook/models mxnet-onnx-mlnet-modeling`
 
-## Inference
+### Inference
 
 Use the generated _ONNX_ model for running an inference web service.
 
