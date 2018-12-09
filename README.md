@@ -2,6 +2,14 @@
 
 This is an example project to show how an Apache MXNet MLP model can be exported to the ONNX format and subsequently be used in ML.NET. The challenge was running inference in ML.NET because at the time of writing, the ONNX Transformer was only supported on Windows [ref](https://blogs.msdn.microsoft.com/dotnet/2018/10/08/announcing-ml-net-0-6-machine-learning-net/).
 
+# *Tutorial*
+
+**An in-depth tutorial describing the process and how to productionize the whole ML pipeline in AWS is described on my blog:**
+
+[MXNet to ONNX to ML.NET with SageMaker, ECS and ECR](https://cosminsanda.com/posts/mxnet-to-onnx-to-ml.net-with-sagemaker-ecs-and-ecr/)
+
+**To follow the tutorial all you need in terms of software requirements are a browser and an RDP client.**
+
 # Requirements
 
 For the _Modeling_ part you need Docker to use Linux containers.
