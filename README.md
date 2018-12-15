@@ -8,7 +8,7 @@ This is an example project to show how an Apache MXNet MLP model can be exported
 
 [MXNet to ONNX to ML.NET with SageMaker, ECS and ECR](https://cosminsanda.com/posts/mxnet-to-onnx-to-ml.net-with-sagemaker-ecs-and-ecr/)
 
-**To follow the tutorial all you need in terms of software requirements are a browser and an RDP client.**
+**To follow the tutorial, all you need in terms of software requirements are a browser and an RDP client.**
 
 ### Requirements
 
