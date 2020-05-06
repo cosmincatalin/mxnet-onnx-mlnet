@@ -6,7 +6,7 @@ This is an example project to show how an Apache MXNet MLP model can be exported
 
 **An in-depth tutorial describing the process and how to productionize the whole ML pipeline in AWS is described on my blog:**
 
-[MXNet to ONNX to ML.NET with SageMaker, ECS and ECR](https://cosminsanda.com/posts/mxnet-to-onnx-to-ml.net-with-sagemaker-ecs-and-ecr/)
+[MXNet to ONNX to ML.NET with SageMaker, ECS and ECR](https://cosminsanda.com/posts/mxnet-to-onnx-to-ml.net-with-sagemaker-ecs-and-ecr/?utm_source=github&utm_medium=repository&utm_campaign=na)
 
 **To follow the tutorial, all you need in terms of software requirements are a browser and an RDP client.**
 
